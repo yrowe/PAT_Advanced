@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1529408523 source:e:\pat_advanced\1004\main.cpp
+	<iostream>
+	<cstdio>
+	<queue>
+
