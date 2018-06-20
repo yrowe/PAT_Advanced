@@ -10,7 +10,6 @@ int inp[maxn];
 
 int main()
 {
-    //test point 5 is wrong/
     freopen("input1007.txt", "r", stdin);
     int k;
     cin >> k;
@@ -20,7 +19,7 @@ int main()
     maxSum[0] = inp[0];
     start[0] = 0;
     for(int i = 1; i < k;++i){
-        if(maxSum[i-1] + inp[i] >= inp[i]){
+        if(maxSum[i-1] + inp[i] > inp[i]){
             maxSum[i] = maxSum[i-1]+inp[i];
             start[i] = start[i-1];
         }
@@ -38,7 +37,7 @@ int main()
         }
     }
     if(maxValue < 0){
-        cout << "0 0 " << k-1 << endl;
+        cout << "0 " << inp[0] << " " << inp[k-1] << endl;
     }
     else{
         cout << maxValue << " " << inp[start[maxIndex]] << " " << inp[maxIndex] << endl;
