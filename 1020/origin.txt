@@ -1,0 +1,64 @@
+#include<cstdio>
+#include<queue>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+
+const int maxn = 35;
+int post[maxn],in[maxn];
+
+struct node{
+    int data;
+    node *lchild,*rchild;
+};
+
+node* create(int postL,int postR,int inL,int inR){
+    if(postL > postR) return NULL;
+    node* Node = new node;
+    Node->data = post[postR];
+    int k;
+    for(k = inL;k <= inR;++k){
+        if(in[k] == post[postR]) break;
+    }
+
+    int numLeft = k - inL;
+    Node->lchild = create(postL,postL+numLeft-1,inL,k-1);
+    Node->rchild = create(postL+numLeft,postR-1,k+1,inR);
+    return Node;
+}
+
+int num = 0;  //already outputed number;
+
+void BFS(node* r){
+    queue<node*> q;
+    q.push(r);
+    while(!q.empty()){
+        node *tmp = q.front();
+        q.pop();
+        if(num != 0){
+            cout << " " << tmp->data;
+        }
+        else{
+            cout << tmp->data;
+            num++;
+        }
+        if(tmp->lchild != NULL) q.push(tmp->lchild);
+        if(tmp->rchild != NULL) q.push(tmp->rchild);
+
+    }
+    cout << endl;
+}
+
+int main(){
+    //freopen("inputa1020.txt","r",stdin);
+    int n;
+    cin >> n;
+    for(int i = 0;i < n;++i) cin >> post[i];
+    for(int i = 0;i < n;++i) cin >> in[i];
+    node *root = create(0,n-1,0,n-1);
+
+    //cout << "over" << endl;
+    BFS(root);
+}
+
+
