@@ -1,0 +1,74 @@
+#include<cstdio>
+#include<iostream>
+#include<string>
+using namespace std;
+
+/*
+大整数定义，读入，从字符数组转成大整数，乘法运算；
+*/
+
+struct bign{
+    int a[20];
+    int len;
+};
+
+bign change(string ss){
+    bign b;
+    b.len = ss.size();
+    for(int i = 0;i < b.len;++i){
+        b.a[i] = ss[b.len-i-1] - '0';
+    }
+    return b;
+}
+
+
+bign mul2(bign aa){
+    int l = aa.len;
+    int carry = 0;
+    bign ans;
+    ans.len = aa.len;
+    for(int i = 0;i < aa.len;++i){
+        ans.a[i] = aa.a[i]*2+carry;
+        carry = ans.a[i]/10;
+        ans.a[i] %= 10;
+    }
+    if(carry != 0){
+        ans.a[ans.len] = 1;
+        ans.len++;
+    }
+    return ans;
+}
+
+int hashTable[10] = {0};
+
+int main(){
+    string s;
+    cin >> s;
+    bign origin = change(s);
+    for(int i = 0;i < origin.len;++i){
+        hashTable[origin.a[i]]++;
+    }
+
+    bign ans = mul2(origin);
+    bool flg = false;
+    for(int i = 0;i < ans.len;++i){
+        hashTable[ans.a[i]]--;
+    }
+
+    for(int i = 0;i < 10;++i){
+        if(hashTable[i] != 0) flg = true;
+    }
+
+    if(flg){
+        cout << "No" << endl;
+    }
+    else{
+        cout << "Yes" << endl;
+    }
+
+    for(int i = ans.len-1;i >= 0;--i){
+        cout << ans.a[i];
+    }
+
+
+}
