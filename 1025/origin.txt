@@ -1,0 +1,77 @@
+#include<cstdio>
+#include<algorithm>
+#include<iostream>
+#include<vector>
+#include<cstring>
+#include<string>
+using namespace std;
+
+struct stu{    //学号，分数，所在考场,local_rank
+    string id;
+    int score;
+    int location;
+    int local_rank;
+};
+
+bool cmp(stu a,stu b){
+    if(a.score != b.score) return a.score > b.score;
+    else return a.id < b.id;
+}
+
+
+//用一个变量记录 全局排名， 用一个变长数组记录local_rank
+int main(){
+    //freopen("inputa1025.txt","r",stdin);
+    vector<stu> testee;
+    int n;   //total test location
+    cin >> n;
+    //int a[n+1];   //记录local_rank 从1开始，和题目保持一致
+    //memset(a,0,sizeof(int)*(n+1));
+//    for(int i = 0;i < n+1 ;++i)
+//        a[i] = 1;
+
+    for(int i = 1;i <= n;++i){
+        int num;
+        cin >> num;
+        for(int j = 0;j < num;++j){
+            stu tmp;
+            cin >> tmp.id >> tmp.score;
+            tmp.location = i;
+            testee.push_back(tmp);
+        }
+        sort(testee.end()-num,testee.end(),cmp);
+        int local_rank = 1;
+        int tmp_num = 0; //每个考场的人数
+
+        for(auto iter = testee.end()-num;iter != testee.end();++iter){
+            tmp_num++;
+            if(iter == testee.end()-num){
+                iter->local_rank = 1;
+                continue;
+            }
+            if(iter->score != (iter-1)->score){
+                local_rank = tmp_num;
+            }
+            iter->local_rank = local_rank;
+        }
+    }
+
+    sort(testee.begin(),testee.end(),cmp);
+
+    n = testee.size();
+    cout << n << endl;
+//    for(int i = 0;i < n;++i){
+//        cout << testee[i].id << " " << testee[i].score << " " << testee[i].local_rank << endl;
+//    }
+
+    int global_rank = 1;  //全局排名
+    cout << testee[0].id << " " << 1 << " " << testee[0].location << " " << 1 << endl;
+
+    for(int i = 1;i < n; ++i){
+
+        if(testee[i].score != testee[i-1].score){
+            global_rank = i+1;
+        }
+        cout << testee[i].id << " " << global_rank << " " << testee[i].location << " " << testee[i].local_rank << endl;
+    }
+}
