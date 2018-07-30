@@ -1,0 +1,34 @@
+#include<iostream>
+#include<iterator>
+using namespace std;
+
+int main(){
+    int N_node,M,total = 0;
+    cin >> N_node;
+    int distance;
+    int sum[N_node+1] = {0};
+    for(int i = 1;i <= N_node;++i){
+        cin >> distance;
+        total += distance;
+        sum[i] = total;
+        //cout << sum[i] << endl;
+    }
+    //cout << sum[0] << endl;
+
+    cin >> M;
+    for(int i = 0;i<M;++i){
+        int in,out;
+        cin >> in;
+        cin >> out;
+        if (in > out)
+            swap(in,out);
+        --in;
+        --out;
+        int Dis1,Dis2;
+        Dis1 = sum[out] - sum[in];
+        Dis2 = total - Dis1;
+        cout << min(Dis1,Dis2) << endl;
+
+    }
+
+}
