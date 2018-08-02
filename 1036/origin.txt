@@ -1,0 +1,59 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+using namespace std;
+
+struct student{
+	string name;
+	string id;
+	int score;
+};
+
+int main(){
+	//freopen("inputa1036.txt","r",stdin);
+	
+	bool has_male = false;
+	bool has_female = false;
+	int num;
+	student male,female,tmp;
+	char gender;
+	cin >> num;
+	while(num--){
+		cin >> tmp.name >> gender >> tmp.id >> tmp.score;
+		if(gender == 'M'){
+			if(!has_male){
+				has_male = true;
+				male = tmp;
+			}
+			else if(tmp.score < male.score)
+				male = tmp;
+		}
+		else{
+			if(!has_female){
+				has_female = true;
+				female = tmp;
+			} 
+			else if(tmp.score > female.score)
+				female = tmp;
+		} 
+	}
+	
+	if(has_female){
+		cout << female.name << " " << female.id << endl;
+	}
+	else{
+		cout << "Absent" << endl;
+	}
+	
+	if(has_male){
+		cout << male.name << " " << male.id << endl;
+	}
+	else{
+		cout << "Absent" << endl;
+	}
+	
+	if(has_female && has_male)
+		cout << female.score - male.score << endl;
+	else
+		cout << "NA" << endl;
+}
