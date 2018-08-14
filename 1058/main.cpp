@@ -18,7 +18,7 @@ int main()
     freopen("input1058.txt","r", stdin);
     int a,b,c;
     scanf("%d.%d.%d", &a, &b, &c);
-    money A = money(a,b,c);
+    money A(a,b,c);
     scanf("%d.%d.%d", &a, &b, &c);
     money B = money(a,b,c);
     money C = money(A.Galleon+B.Galleon, A.Sickle+B.Sickle, A.Knut+B.Knut);
