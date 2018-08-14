@@ -1,0 +1,31 @@
+#include<cstdio>
+#include<iostream>
+using namespace std;
+
+struct money{
+    int Galleon;
+    int Sickle;
+    int Knut;
+    money(){
+        Galleon = 0;
+        Sickle = 0;
+        Knut = 0;
+    }
+};
+
+int main(){
+    //freopen("inputa1058.txt","r",stdin);
+    money a,b,sum;
+    scanf("%d.%d.%d %d.%d.%d",&a.Galleon,&a.Sickle,&a.Knut,&b.Galleon,&b.Sickle,&b.Knut);
+    sum.Galleon = a.Galleon + b.Galleon;
+    sum.Sickle = a.Sickle + b.Sickle;
+    sum.Knut = a.Knut + b.Knut;
+
+    sum.Sickle += sum.Knut/29;
+    sum.Knut %= 29;
+
+    sum.Galleon += sum.Sickle/17;
+    sum.Sickle %= 17;
+
+    printf("%d.%d.%d\n",sum.Galleon,sum.Sickle,sum.Knut);
+}
