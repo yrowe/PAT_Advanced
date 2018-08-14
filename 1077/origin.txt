@@ -1,0 +1,43 @@
+#include<string>
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+int main(){
+    //freopen("inputa1077.txt","r",stdin);
+    int n;
+    int len = 999;
+    cin >> n;
+    getchar();
+    vector<string> ans;
+    for(int i = 0;i < n;++i){
+        string tmp;
+        getline(cin,tmp);
+        reverse(tmp.begin(),tmp.end());
+        ans.push_back(tmp);
+        if(tmp.size() < len)
+            len = tmp.size();
+    }
+    string s = "";
+    for(int i = 0;i < len;++i){
+        bool flg = true;
+        for(int j = 1;j < n;++j){
+            if(ans[0][i] != ans[j][i])
+                flg = false;
+        }
+        if(flg)
+            s += ans[0][i];
+        else
+            break;
+    }
+    if(s.size() == 0){
+        cout << "nai" << endl;
+    }
+    else{
+        reverse(s.begin(),s.end());
+        cout << s << endl;
+    }
+
+
+}
