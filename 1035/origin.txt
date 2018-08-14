@@ -1,0 +1,60 @@
+#include<string>
+#include<cstdio>
+#include<iostream>
+#include<vector>
+using namespace std;
+
+struct sarray{
+    string s1;
+    string s2;
+};
+
+int main(){
+    //freopen("inputa1035.txt","r",stdin);
+    int cnt = 0;
+    vector<sarray> ans;
+    int n;
+    cin >> n;
+    for(int j = 0;j < n;++j){
+        sarray tmp;
+        bool flg = false;
+        cin >> tmp.s1 >> tmp.s2;
+        int len = tmp.s2.size();
+        for(int i = 0;i < len;++i){
+            if(tmp.s2[i] == 'l'){
+                flg = true;
+                tmp.s2[i] = 'L';
+            }
+            if(tmp.s2[i] == 'O'){
+                flg = true;
+                tmp.s2[i] = 'o';
+            }
+            if(tmp.s2[i] == '1'){
+                flg = true;
+                tmp.s2[i] = '@';
+            }
+            if(tmp.s2[i] == '0'){
+                flg = true;
+                tmp.s2[i] = '%';
+            }
+        }
+        if(flg){
+            ++cnt;
+            ans.push_back(tmp);
+        }
+    }
+
+    if(cnt > 0){
+        cout << cnt << endl;
+        for(auto it:ans)
+            cout << it.s1 <<" " << it.s2 << endl;
+    }
+    else{
+        if(n == 1){
+            cout << "There is 1 account and no account is modified" << endl;
+        }
+        else{
+            cout << "There are " << n << " accounts and no account is modified" << endl;
+        }
+    }
+}
