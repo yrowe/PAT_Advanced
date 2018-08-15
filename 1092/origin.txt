@@ -1,0 +1,57 @@
+#include<cstdio>
+#include<iostream>
+#include<string>
+using namespace std;
+
+int hashTable[62] = {0};
+
+int change(char c){
+    int ans;
+    if(c >= '0' && c <= '9'){
+        ans = c - '0';
+    }
+    if(c >= 'a' && c <= 'z'){
+        ans = c - 'a' + 10;
+    }
+    if(c >= 'A' && c <= 'Z'){
+        ans = c - 'A' + 10 + 26;
+    }
+    return ans;
+}
+
+int main(){
+//    cout << change('0') << " " << change('9') << endl;
+//    cout << change('a') << " " << change('z') << endl;
+//    cout << change('A') << " " << change('Z') << endl;
+    //freopen("inputa1092.txt","r",stdin);
+    string s1,s2;
+    cin >> s1 >> s2;
+    for(auto s:s1){
+        int i = change(s);
+        hashTable[i]++;
+    }
+    for(auto s:s2){
+        int i = change(s);
+        hashTable[i]--;
+    }
+
+    int cnt_pos = 0,cnt_neg = 0;
+    bool flg = false;
+
+    for(int i = 0;i < 63;++i){
+        if(hashTable[i] > 0) cnt_pos += hashTable[i];
+        if(hashTable[i] < 0){
+            flg = true;
+            cnt_neg += hashTable[i];
+        }
+    }
+
+    if(flg){
+        cout << "No " << -1*cnt_neg;
+    }
+    else{
+        cout << "Yes " << cnt_pos;
+    }
+}
+ 
+ 
