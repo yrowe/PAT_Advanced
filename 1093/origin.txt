@@ -1,0 +1,16 @@
+#include<string>
+#include<iostream>
+using namespace std;
+
+long long T_count,AT_count,PAT_count;
+string s;
+int main(){
+
+    cin >> s;
+    for(auto p = s.rbegin();p != s.rend();++p){
+        if(*p == 'T') ++T_count;
+        if(*p == 'A') AT_count += T_count;
+        if(*p == 'P') PAT_count += AT_count;
+    }
+    cout << PAT_count%1000000007;
+}
