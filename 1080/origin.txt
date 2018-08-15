@@ -1,0 +1,93 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+const int maxn = 40005;
+
+struct stu{
+    int ge;
+    int total;
+    int r;
+    int target[6];
+    int id;
+}S[maxn];
+
+struct school{
+    int quora;
+    int num;
+    int last_r;
+    vector<int> s_id;
+    school(){
+        num = 0;
+        last_r = -1;
+    }
+}T[150];
+
+bool cmp(stu a,stu b){
+    if(a.total != b.total) return a.total > b.total;
+    return a.ge > b.ge;
+}
+
+int main(){
+    //freopen("inputa1080.txt","r",stdin);
+    int n,m,k;
+    cin >> n >> m >> k;
+    for(int i = 0;i < m;++i){
+        cin >> T[i].quora;
+    }
+
+    int g1,g2;
+    for(int i = 0;i < n;++i){
+        cin >> g1 >> g2;
+        S[i].id = i;
+        S[i].ge = g1;
+        S[i].total = g1+g2;
+        for(int j = 0;j < k;++j){
+            cin >> S[i].target[j];
+        }
+    }
+
+    sort(S,S+n,cmp);
+
+    int r = 0;
+    for(int i = 0;i < n;++i){
+        if(i > 0){
+            if(S[i].total != S[i-1].total || S[i].ge != S[i-1].ge){
+                r = i;
+            }
+        }
+        S[i].r = r;
+        //cout << S[i].ge << " " << S[i].total << " " << S[i].r << endl;
+
+        for(int j = 0;j < m;++j){
+            int t = S[i].target[j];
+            if(T[t].num < T[t].quora || S[i].r == T[t].last_r){
+                T[t].last_r = S[i].r;
+                T[t].num++;
+                T[t].s_id.push_back(S[i].id);
+                break;
+            }
+        }
+    }
+
+    for(int i = 0;i < m;++i){
+        if(T[i].s_id.empty()){
+            cout << endl;
+        }
+        else{
+            sort(T[i].s_id.begin(),T[i].s_id.end());
+            for(auto it = T[i].s_id.begin();it != T[i].s_id.end();++it){
+                if(it != T[i].s_id.end() - 1){
+                    cout << *it << " ";
+                }
+                else{
+                    cout << *it << endl;
+                }
+            }
+        }
+    }
+
+
+}
