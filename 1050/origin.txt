@@ -1,0 +1,23 @@
+#include<cstdio>
+#include<iostream>
+#include<string>
+using namespace std;
+
+int hashTable[200] = {0};
+
+int main(){
+    //freopen("inputa1050.txt","r",stdin);
+    string s1,s2;
+    getline(cin,s1);
+    getline(cin,s2);
+
+    for(auto s:s2){
+        hashTable[s] = 1;
+    }
+
+    for(auto s:s1){
+        if(hashTable[s] == 0){
+            cout << s;
+        }
+    }
+}
