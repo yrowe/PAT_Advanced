@@ -1,0 +1,66 @@
+不能边读边判定age个数，因为先出现的100个age并不一定是最大的100个，必须读完，再判定。使用origin解法
+#include <iostream>
+#include <cstdio>
+#include <algorithm>
+#include <cstring>
+
+using namespace std;
+
+struct people{
+    char name[10];
+    int age;
+    int wealth;
+    people(){}
+    people(char _name[10], int _age, int _wealth){
+        strcpy(name, _name);
+        age = _age;
+        wealth = _wealth;
+    }
+}p[100005];
+
+bool cmp(people a, people b){
+    if(a.wealth != b.wealth)
+        return a.wealth > b.wealth;
+    if(a.age != b.age)
+        return a.age < b.age;
+    return strcmp(a.name, b.name) < 0;
+}
+
+int main()
+{
+    freopen("input1055.txt", "r", stdin);
+    int n, k;
+    char name[10];
+    int age, wealth;
+    int cnt[210] = {0};
+    scanf("%d %d", &n, &k);
+    int index = 0;
+    for(int i = 0;i < n; ++i){
+        scanf("%s %d %d", name, &age, &wealth);
+        if(cnt[age] < 100){
+            cnt[age]++;
+            p[index++] = people(name, age, wealth);
+        }
+    }
+
+    sort(p, p+index, cmp);
+
+    int num, low, up;
+    for(int i = 1;i <= k; ++i){
+        scanf("%d %d %d", &num, &low, &up);
+        printf("Case #%d:\n", i);
+        int out_num = 0;
+        for(int j = 0;j < index; ++j){
+            if(p[j].age >= low && p[j].age <= up){
+                out_num++;
+                printf("%s %d %d\n", p[j].name, p[j].age, p[j].wealth);
+            }
+            if(out_num == num)
+                break;
+        }
+        if(out_num == 0)
+            printf("None\n");
+
+    }
+    return 0;
+}
