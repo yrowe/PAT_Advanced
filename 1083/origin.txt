@@ -1,0 +1,44 @@
+#include<cstdio>
+#include<iostream>
+#include<string>
+#include<algorithm>
+using namespace std;
+
+const int maxn = 1000;
+
+struct stu{
+    string name,id;
+    int score;
+}S[maxn];
+
+bool cmp(stu a,stu b){
+    return a.score > b.score;
+}
+
+int main(){
+    //freopen("inputa1083.txt","r",stdin);
+    int n;
+    cin >> n;
+
+    for(int i = 0;i < n;++i){
+        cin >> S[i].name >> S[i].id >> S[i].score;
+    }
+
+    int lowB,highB;
+    cin >> lowB >> highB;
+
+    sort(S,S+n,cmp);
+
+    bool flg = false;
+
+    for(int i = 0;i < n;++i){
+        if(S[i].score >= lowB  && S[i].score <= highB){
+            cout << S[i].name << " " << S[i].id << endl;
+            flg = true;
+        }
+    }
+
+    if(flg == false)
+        cout << "NONE" << endl;
+
+}
