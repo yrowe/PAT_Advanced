@@ -1,0 +1,88 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<cstring>
+using namespace std;
+
+const int maxn = 10010;
+
+int n,k,m;
+
+struct stu{
+    int id;
+    int a[6];
+    int score;
+    int perfect;
+    bool flag;
+}S[maxn];
+
+void init(){
+    for(int i = 1;i <= n;++i){
+        S[i].id = i;
+        S[i].score = 0;
+        S[i].flag = false;
+        S[i].perfect = 0;
+        memset(S[i].a,-1,sizeof(S[i].a));
+    }
+}
+
+bool cmp(stu a,stu b){
+    if(a.score != b.score) return a.score > b.score;
+    if(a.perfect != b.perfect) return a.perfect > b.perfect;
+    return a.id < b.id;
+}
+
+int main(){
+    //freopen("inputa1075.txt","r",stdin);
+    scanf("%d %d %d",&n,&k,&m);
+    init();
+    int full[6];
+    for(int i = 1;i <= k;++i){
+        scanf("%d",&full[i]);
+    }
+
+    for(int i = 0;i < m;++i){
+        int uid,pid,score;
+        scanf("%d %d %d",&uid,&pid,&score);
+        if(score != -1){
+            S[uid].flag = true;
+        }
+
+        if(score == -1 && S[uid].a[pid] == -1){
+            S[uid].a[pid] = 0;
+        }
+
+        if(S[uid].a[pid] != full[pid] && score == full[pid]){
+            S[uid].perfect++;
+        }
+
+        if(score > S[uid].a[pid]){
+            S[uid].a[pid] = score;
+        }
+    }
+
+    for(int i = 1;i <= n;++i){
+        for(int j = 1;j <= k;++j){
+            if(S[i].a[j] != -1){
+                S[i].score += S[i].a[j];
+            }
+        }
+    }
+
+    sort(S+1,S+n+1,cmp);
+
+    int r = 1;
+
+    for(int i = 1;i <= n;++i){
+        if(S[i].flag == false) break;
+        if(S[i].score != S[i-1].score){
+            r = i;
+        }
+        printf("%d %05d %d",r,S[i].id,S[i].score);
+        for(int j = 1;j <= k;++j){
+            if(S[i].a[j] != -1) printf(" %d",S[i].a[j]);
+            else printf(" -");
+        }
+        printf("\n");
+    }
+}
