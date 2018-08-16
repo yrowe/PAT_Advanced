@@ -1,0 +1,68 @@
+#include<cstdio>
+#include<iostream>
+using namespace std;
+
+const int maxn = 110;
+
+struct frac{
+    int up;
+    int down;
+}f[maxn];
+
+int gcd(int a,int b){
+    if(b == 0) return a;
+    return gcd(b,a%b);
+}
+
+frac add(frac a,frac b){
+    //the add function
+    frac sum;
+    sum.up = a.up*b.down+b.up*a.down;
+    sum.down = a.down*b.down;
+
+    bool neg = false;
+    if(sum.up < 0){
+        neg = true;
+        sum.up *= -1;
+    }
+
+    int g = gcd(sum.up,sum.down);
+    sum.down /= g;
+    sum.up /= g;
+
+    if(neg) sum.up *= -1;
+
+    return sum;
+}
+
+int main(){
+    //freopen("inputa1081.txt","r",stdin);
+    int n;
+    cin >> n;
+    for(int i = 0;i < n;++i){
+        scanf("%d/%d",&f[i].up,&f[i].down);
+    }
+
+    frac ans = f[0];
+
+    for(int i = 1;i < n;++i){
+        ans = add(ans,f[i]);
+    }
+
+    if(ans.up == 0){
+        cout << "0" << endl;
+        return 0;
+    }
+
+    if(ans.up/ans.down == 0){
+        cout << ans.up << "/" << ans.down << endl;
+        return 0;
+    }
+
+    if(ans.up%ans.down == 0){
+        cout << ans.up/ans.down << endl;
+        return 0;
+    }
+
+    cout << ans.up/ans.down << " " << ans.up%ans.down << "/" << ans.down << endl;
+}
