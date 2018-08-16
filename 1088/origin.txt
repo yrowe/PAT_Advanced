@@ -1,0 +1,161 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+typedef long long ll;
+
+struct frac{
+    ll up;
+    ll down;
+};
+
+ll gcd(ll a,ll b){
+    if(b == 0) return a;
+    return gcd(b,a%b);
+}
+
+frac add(frac a,frac b){
+    frac ans;
+    ans.up = a.up*b.down + a.down*b.up;
+    ans.down = a.down * b.down;
+    bool neg = false;
+    if(ans.up < 0){
+        neg = true;
+        ans.up *= -1;
+    }
+    ll g = gcd(ans.up,ans.down);
+    ans.up /= g;
+    ans.down /= g;
+
+    if(neg) ans.up *= -1;
+
+    return ans;
+}
+
+frac sub(frac a,frac b){
+    frac ans;
+    ans.up = a.up*b.down - a.down*b.up;
+    ans.down = a.down * b.down;
+    bool neg = false;
+    if(ans.up < 0){
+        neg = true;
+        ans.up *= -1;
+    }
+    ll g = gcd(ans.up,ans.down);
+    ans.up /= g;
+    ans.down /= g;
+
+    if(neg) ans.up *= -1;
+
+    return ans;
+}
+
+frac mul(frac a,frac b){
+    frac ans;
+    ans.up = a.up * b.up;
+    ans.down = a.down * b.down;
+
+    bool neg = false;
+    if(ans.up < 0){
+        neg = true;
+        ans.up *= -1;
+    }
+
+    ll g = gcd(ans.up,ans.down);
+
+    ans.up /= g;
+    ans.down /= g;
+
+    if(neg) ans.up *= -1;
+    return ans;
+}
+
+frac div(frac a,frac b,bool &flg){
+    flg = false;
+    frac ans;
+    ans.up = 0;
+    ans.down = 0;
+    if(b.up == 0){
+        flg = true;
+        return ans;
+    }
+
+    int cnt = 0;
+
+    ans.up = a.up * b.down;
+    ans.down = a.down * b.up;
+
+    if(ans.up < 0){
+        cnt++;
+        ans.up *= -1;
+    }
+
+    if(ans.down < 0){
+        cnt++;
+        ans.down *= -1;
+    }
+
+    ll g = gcd(ans.up,ans.down);
+
+    ans.up /= g;
+    ans.down /= g;
+
+    if(cnt == 1) ans.up *= -1;
+
+    return ans;
+}
+
+void print_frac(frac r){
+    if(r.up == 0) r.down = 1;
+    if(r.up < 0) printf("(");
+    if(r.down == 1) printf("%lld",r.up);
+    else if(abs(r.up) > r.down){
+        printf("%lld %lld/%lld",r.up / r.down,abs(r.up) % r.down,r.down);
+    }
+    else{
+        printf("%lld %lld",r.up,r.down);
+    }
+    if(r.up < 0) printf(")");
+}
+
+int main(){
+    //freopen("inputa1088.txt","r",stdin);
+    frac f1,f2;
+    scanf("%lld/%lld %lld/%lld",&f1.up,&f1.down,&f2.up,&f2.down);
+    //add
+    print_frac(f1);
+    printf(" + ");
+    print_frac(f2);
+    printf(" = ");
+    print_frac(add(f1,f2));
+    printf("\n");
+    //sub
+    print_frac(f1);
+    printf(" - ");
+    print_frac(f2);
+    printf(" = ");
+    print_frac(sub(f1,f2));
+    printf("\n");
+    //mul
+    print_frac(f1);
+    printf(" * ");
+    print_frac(f2);
+    printf(" = ");
+    print_frac(mul(f1,f2));
+    printf("\n");
+    //div
+    print_frac(f1);
+    printf(" / ");
+    print_frac(f2);
+    printf(" = ");
+    bool flg;
+    frac aa;
+    aa = div(f1,f2,flg);
+    if(flg){
+        printf("Inf\n");
+    }
+    else{
+        print_frac(aa);
+    }
+}
