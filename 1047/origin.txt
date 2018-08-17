@@ -1,0 +1,49 @@
+#include<cstdio>
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<cstring>
+using namespace std;
+
+const int maxn = 40010;
+const int maxc = 2510;
+
+char name[maxn][5];
+vector<int> course[maxc];
+
+bool cmp(int a,int b){
+    return strcmp(name[a],name[b]) < 0;
+}
+
+int main(){
+    //freopen("inputa1047.txt","r",stdin);
+    int n,k;
+    //cin >> n >> k;
+    scanf("%d %d",&n,&k);
+    for(int i = 0;i < n;++i){
+        //string tmp_name;
+        //cin >> tmp_name;
+        scanf("%s",name[i]);
+        int c_num;
+        //cin >> c_num;
+        scanf("%d",&c_num);
+        while(c_num--){
+            int tmp_c;
+            //cin >> tmp_c;
+            scanf("%d",&tmp_c);
+            course[tmp_c].push_back(i);
+        }
+    }
+
+    for(int i = 1;i <= k;++i){
+        //sort(course[i].begin(),course[i].end());
+        sort(course[i].begin(),course[i].end(),cmp);
+        //cout << i << " " << course[i].size() << endl;
+        printf("%d %d\n",i,course[i].size());
+        for(auto j:course[i]){
+            //cout << j << endl;
+            printf("%s\n",name[j]);
+        }
+    }
+
+}
