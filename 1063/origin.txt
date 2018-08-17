@@ -1,0 +1,44 @@
+#include<cstdio>
+#include<algorithm>
+#include<set>
+#include<iostream>
+using namespace std;
+
+const int maxn = 10010;
+set<int> s[maxn];
+
+double cnt_rate(int a,int b) {
+    int totalNum = s[a].size(),sameNum = 0;
+    for(auto i:s[b]){
+        if(s[a].find(i) != s[a].end()) sameNum++;
+        else totalNum++;
+    }
+    //cout << totalNum << " " << sameNum << endl;
+    return (sameNum*100.0)/totalNum;
+}
+
+int main(){
+    //freopen("inputa1063.txt","r",stdin);
+    int n;
+    cin >> n;
+    for(int i = 1;i <= n;++i){
+        int s_num;
+        cin >> s_num;
+        //cout << s_num << endl;
+        while(s_num--){
+            int tmp;
+            cin >> tmp;
+            s[i].insert(tmp);
+        }
+    }
+
+    int k;
+    cin >> k;
+
+    while(k--){
+        int a,b;
+        cin >> a >> b;
+        printf("%.1f%\n",cnt_rate(a,b));
+    }
+
+}
