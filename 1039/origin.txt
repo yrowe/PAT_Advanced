@@ -1,0 +1,59 @@
+#include<cstdio>
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+const int maxn = 26*26*26*10 + 1;
+
+int get_hash(char s[]){
+    int id = 0;
+    for(int i = 0;i < 3;++i){
+        id = id*26 + (s[i] - 'A');
+    }
+    id = id*10 + s[3] - '0';
+    return id;
+}
+
+vector<int> stu[maxn];
+
+int main(){
+    //freopen("inputa1039.txt","r",stdin);
+    int n,k;   // n:number of students, k: number of courses
+    //cin >> n >> k;
+    scanf("%d %d",&n,&k);
+    int id;
+    for(int i = 0;i < k;++i){
+        int index,num;
+        //cin >> index >> num;
+        scanf("%d %d",&index,&num);
+        for(int j = 0;j < num;++j){
+            //string s;
+            char s[5];
+            //cin >> s;
+            scanf("%s",s);
+            id = get_hash(s);
+            stu[id].push_back(index);
+        }
+    }
+
+
+    for(int i = 0;i < n;++i){
+        //string s;
+        //cin >> s;
+        char s[5];
+        scanf("%s",s);
+        id = get_hash(s);
+        //cout << s << " " << stu[id].size();
+        printf("%s %d",s,stu[id].size());
+        sort(stu[id].begin(),stu[id].end());
+        for(int j = 0;j < stu[id].size();++j){
+            //cout << " " << stu[id][j];
+            printf(" %d",stu[id][j]);
+        }
+        //cout << endl;
+        printf("\n");
+    }
+
+}
+
