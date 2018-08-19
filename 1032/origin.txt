@@ -1,0 +1,37 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+const int maxn = 100000;
+int ne[maxn];
+bool hashTable[maxn] = {false};
+
+int main(){
+    //freopen("inputa1032.txt","r",stdin);
+    int s1,s2,n;
+    cin >> s1 >> s2 >> n;
+    fill(ne,ne+maxn,-2);
+    for(int i = 0;i < n;++i){
+        int a1,a2;
+        char c;
+        cin >> a1 >> c >> a2;
+        ne[a1] = a2;
+    }
+
+    int p = s1;
+
+    while(p != -1){
+        hashTable[p] = true;
+        p = ne[p];
+    }
+
+    p = s2;
+    while(p != -1){
+        if(hashTable[p] == true) break;
+        p = ne[p];
+    }
+
+    if(p == -1) printf("-1\n");
+    else printf("%05d\n",p);
+}
