@@ -1,0 +1,75 @@
+//在链表中的结点 且非重复结点r = 1,在链表中，重复结点 r = 2 ，，初始值r = 3
+#include<cstdio>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+
+const int maxn = 100010;
+const int max2 = 100010;
+
+bool used[max2] = {false};
+
+struct node{
+    int address,data,next,r,order;
+    node(){
+        r = 3;
+    }
+}Node[maxn];
+
+bool cmp(node a,node b){
+    if(a.r != b.r) return a.r < b.r;
+    else return a.order < b.order;
+}
+
+int main(){
+    //freopen("inputa1097.txt","r",stdin);
+    int st,n;
+    cin >> st >> n;
+    for(int i = 0;i < n;++i){
+        int ad;
+        cin >> ad;
+        cin >> Node[ad].data >> Node[ad].next;
+        Node[ad].address = ad;
+    }
+
+    int p = st;
+    int order = 0;
+    int n1 = 0,n2 = 0;
+    while(p != -1){
+        if(used[abs(Node[p].data)]){
+            Node[p].r = 2;
+            n2++;
+        }
+        else{
+            used[abs(Node[p].data)] = true;
+            Node[p].r = 1;
+            n1++;
+        }
+        Node[p].order = order++;
+        p = Node[p].next;
+    }
+
+    sort(Node,Node+maxn,cmp);
+
+    for(int i = 0;i < n1;++i){
+        //cout << Node[i].address << " " << Node[i].data << endl;
+        if(i != n1-1){
+            printf("%05d %d %05d\n",Node[i].address,Node[i].data,Node[i+1].address);
+        }
+        else{
+            printf("%05d %d -1\n",Node[i].address,Node[i].data);
+        }
+    }
+
+    //cout << endl;
+    //cout << Node[3].address << " " << Node[3].data << endl;
+    for(int i = n1;i < n1+n2;++i){
+        //cout << Node[i].address << " " << Node[i].data << endl;
+        if(i != n1+n2-1){
+            printf("%05d %d %05d\n",Node[i].address,Node[i].data,Node[i+1].address);
+        }
+        else{
+            printf("%05d %d -1\n",Node[i].address,Node[i].data);
+        }
+    }
+}
