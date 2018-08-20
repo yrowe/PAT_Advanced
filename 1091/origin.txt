@@ -1,0 +1,79 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<queue>
+using namespace std;
+
+int mat[1300][130][70];
+bool hashTable[1300][130][70] = {false};
+
+int m,n,l,t;
+int sum = 0;
+
+struct point{
+    int x,y,z;
+};
+
+int biasX[] = {1,-1,0,0,0,0};
+int biasY[] = {0,0,1,-1,0,0};
+int biasZ[] = {0,0,0,0,1,-1};
+
+point cal(point a,int b,int c,int d){
+    a.x += b;
+    a.y += c;
+    a.z += d;
+    return a;
+}
+
+bool judge(point a){
+    if(a.x < 0 || a.x >= n) return false;
+    if(a.y < 0 || a.y >= m) return false;
+    if(a.z < 0 || a.z >= l) return false;
+    return true;
+}
+
+
+
+int main(){
+    //freopen("inputa1091.txt","r",stdin);
+    cin >> n >> m >> l >> t;
+    for(int z = 0;z < l;++z){
+        for(int i = 0;i < n;++i){
+            for(int j = 0;j < m;++j){
+                cin >> mat[i][j][z];
+            }
+        }
+    }
+
+    for(int i = 0;i < n;++i){
+        for(int j = 0;j < m;++j){
+            for(int z = 0;z < l;++z){
+                if(hashTable[i][j][z] == false && mat[i][j][z] == 1){  //未访问过的点，或者说联通块
+                    queue<point> q;
+                    int local = 1;     //联通块个数
+                    hashTable[i][j][z] = true;
+                    point pp{i,j,z};
+                    q.push(pp);
+                    while(!q.empty()){
+                        point tmp = q.front();
+                        q.pop();       //取出队列头的数
+                        for(int aa = 0;aa < 6;++aa){
+                            point tmp_bias = cal(tmp,biasX[aa],biasY[aa],biasZ[aa]);
+                            if(judge(tmp_bias) && hashTable[tmp_bias.x][tmp_bias.y][tmp_bias.z] == false && mat[tmp_bias.x][tmp_bias.y][tmp_bias.z] == 1){
+                                hashTable[tmp_bias.x][tmp_bias.y][tmp_bias.z] = true;
+                                q.push(tmp_bias);
+                                local++;
+                            }
+                        }
+                    }
+                    if(local >= t) sum += local;
+                }
+            }
+        }
+    }
+
+
+
+    cout << sum << endl;
+
+}
