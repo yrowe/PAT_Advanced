@@ -1,0 +1,56 @@
+#include<cstdio>
+#include<iostream>
+#include<vector>
+using namespace std;
+
+const int maxn = 100010;
+
+struct node{
+    vector<int> child;
+}Node[maxn];
+
+int maxDepth = -1;
+int cnt = 0;
+
+void DFS(int a,int depth){
+    if(depth == maxDepth){
+        cnt++;
+    }
+
+    if(depth > maxDepth){
+        maxDepth = depth;
+        cnt = 1;
+    }
+
+
+    for(auto i:Node[a].child){
+        DFS(i,depth+1);
+    }
+}
+
+double cal(double p,double r){
+    double ans = p;
+    for(int i = 0;i < maxDepth;++i){
+        ans *= (100+r)*1.0/100;
+    }
+    return ans;
+}
+
+int main(){
+    //freopen("inputa1090.txt","r",stdin);
+    int n,root;
+    double p,r;
+    cin >> n >> p >> r;
+    for(int i = 0;i < n;++i){
+        int tmp;
+        cin >> tmp;
+        if(tmp != -1){
+            Node[tmp].child.push_back(i);
+        }
+        else{
+            root = i;
+        }
+    }
+    DFS(root,0);
+    printf("%0.2f %d\n",cal(p,r),cnt);
+}
