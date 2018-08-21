@@ -1,0 +1,56 @@
+#include<cstdio>
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+
+const int maxn = 100010;
+int n;
+double p,r;
+double ans = 0;
+
+struct node{
+    vector<int> child;
+    int amount;
+}Node[maxn];
+
+void DFS(int a,int depth){
+    if(Node[a].child.empty()){
+        ans += Node[a].amount * pow(1+r,depth);
+    }
+    else{
+        //for(auto x:Node[a].child){
+        for(int i = 0;i < Node[a].child.size();++i){
+            DFS(Node[a].child[i],depth+1);
+        }
+    }
+}
+
+int main(){
+    //freopen("inputa1079.txt","r",stdin);
+    scanf("%d %lf %lf",&n,&p,&r);
+    r /= 100;
+    for(int i = 0;i < n;++i){
+        int n_child;
+        //cin >> n_child;
+        scanf("%d",&n_child);
+        if(n_child != 0){
+            while(n_child--){
+                int tmp;
+                //cin >> tmp;
+                scanf("%d",&tmp);
+                Node[i].child.push_back(tmp);
+            }
+        }
+        else{
+            int amount;
+            //cin >> amount;
+            scanf("%d",&amount);
+            Node[i].amount = amount;
+        }
+    }
+
+    DFS(0,0);
+    printf("%.1f\n",ans*p);
+
+}
