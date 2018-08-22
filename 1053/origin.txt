@@ -1,0 +1,79 @@
+#include<cstdio>
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+const int maxn = 110;
+
+struct node{
+    vector<int> child;
+    int weight;
+}Node[maxn];
+
+int m,n,w;
+
+vector<vector<int>> ans;
+
+void DFS(int a,vector<int> &v){
+    if(Node[a].child.empty()){
+        int sum = 0;
+        for(auto x:v){
+            sum += Node[x].weight;
+        }
+        if(sum == w){
+            ans.push_back(v);
+        }
+        return;
+    }
+
+    for(auto x:Node[a].child){
+        v.push_back(x);
+        DFS(x,v);
+        v.pop_back();
+    }
+}
+
+bool cmp(vector<int> a,vector<int> b){
+    for(int i = 0;i < a.size() || i < b.size();++i){
+        if(Node[a[i]].weight == Node[b[i]].weight) continue;
+        if(Node[a[i]].weight > Node[b[i]].weight) return true;
+        else return false;
+    }
+    return a.size() > b.size();
+}
+
+int main(){
+    //freopen("inputa1053.txt","r",stdin);
+
+    cin >> m >> n >> w;
+    for(int i = 0;i < m;++i){
+        cin >> Node[i].weight;
+    }
+
+    for(int i = 0;i < n;++i){
+        int id,num,tmp;
+        cin >> id >> num;
+        while(num--){
+            cin >> tmp;
+            Node[id].child.push_back(tmp);
+        }
+    }
+
+    vector<int> tmp;
+    tmp.push_back(0);
+    DFS(0,tmp);
+
+    sort(ans.begin(),ans.end(),cmp);
+
+    for(auto mm:ans){
+        for(int i = 0;i < mm.size();++i){
+            if(i != mm.size()-1){
+                cout << Node[mm[i]].weight << " ";
+            }
+            else{
+                cout << Node[mm[i]].weight << endl;
+            }
+        }
+    }
+}
