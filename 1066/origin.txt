@@ -1,0 +1,103 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+struct node{
+    node *lchild,*rchild;
+    int v,height;
+}*root;
+
+node* newNode(int v){
+    node* Node = new node;
+    Node->v = v;
+    Node->height = 1;
+    Node->lchild = Node->rchild = NULL;
+    return Node;
+}
+
+int getHeight(node* Node){
+    if(Node == NULL){
+        return 0;
+    }
+    else{
+        return Node->height;
+    }
+}
+
+void updateHeight(node* &Node){
+    Node->height = max(getHeight(Node->lchild),getHeight(Node->rchild))+1;
+}
+
+int getBalanceFactor(node* Node){
+    return getHeight(Node->lchild)-getHeight(Node->rchild);
+}
+
+void L(node* &root){
+    node* temp = root->rchild;
+    root->rchild = temp->lchild;
+    temp->lchild = root;
+    updateHeight(root);
+    updateHeight(temp);
+    root = temp;
+}
+
+void R(node* &root){
+    node* temp = root->lchild;
+    root->lchild = temp->rchild;
+    temp->rchild = root;
+    updateHeight(root);
+    updateHeight(temp);
+    root = temp;
+}
+
+void inser(node* &Node,int v){
+    if(Node == NULL){
+        Node = newNode(v);
+        return;
+    }
+    if(v < Node->v){
+        inser(Node->lchild,v);
+        updateHeight(Node);
+        if(getBalanceFactor(Node) == 2){
+            if(getBalanceFactor(Node->lchild) == 1){
+                //LL type
+                R(Node);
+            }
+            else if(getBalanceFactor(Node->lchild) == -1){
+                //LR
+                L(Node->lchild);
+                R(Node);
+            }
+
+        }
+    }
+    else{
+        inser(Node->rchild,v);
+        updateHeight(Node);
+        if(getBalanceFactor(Node) == -2){
+            if(getBalanceFactor(Node->rchild) == -1){
+                //RR type
+                L(Node);
+            }
+            else if(getBalanceFactor(Node->rchild) == 1){
+                //RL type
+                R(Node->rchild);
+                L(Node);
+            }
+        }
+    }
+
+}
+
+int main(){
+    //freopen("inputa1066.txt","r",stdin);
+    int n,v;
+    cin >> n;
+
+    for(int i = 0;i < n;++i){
+        cin >> v;
+        inser(root,v);
+    }
+    cout << root->v << endl;
+}
