@@ -1,0 +1,107 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+using namespace std;
+
+struct node{
+    node *lchild,*rchild;
+    int data;
+};
+
+vector<int> v,inOrd,inOrd_m;
+int n;
+int num = 0;
+
+void insert_node(node* &N,int data){
+    if(N == NULL){
+        N = new node;
+        N->data = data;
+        N->lchild = NULL;
+        N->rchild = NULL;
+        return;
+    }
+    if(data < N->data){
+        insert_node(N->lchild,data);
+    }
+    else{
+        insert_node(N->rchild,data);
+    }
+    return;
+}
+
+void create(node* &root){
+    for(int i = 0;i < n;++i){
+        insert_node(root,v[i]);
+    }
+}
+
+
+void inOrder(node* root){
+    if(root == NULL) return;
+    inOrd.push_back(root->data);
+    inOrder(root->lchild);
+    inOrder(root->rchild);
+    return;
+}
+
+void inOrder_m(node* root){
+    if(root == NULL) return;
+    inOrd_m.push_back(root->data);
+    inOrder_m(root->rchild);
+    inOrder_m(root->lchild);
+    return;
+}
+
+void postOrder(node* root){
+    if(root == NULL) return;
+    postOrder(root->lchild);
+    postOrder(root->rchild);
+    if(num < n-1){
+        cout << root->data << " ";
+        ++num;
+    }
+    else{
+        cout << root->data << endl;
+    }
+}
+
+void postOrder_m(node* root){
+    if(root == NULL) return;
+    postOrder_m(root->rchild);
+    postOrder_m(root->lchild);
+    if(num < n-1){
+        cout << root->data << " ";
+        ++num;
+    }
+    else{
+        cout << root->data << endl;
+    }
+}
+
+int main(){
+    //freopen("inputa1043.txt","r",stdin);
+    cin >> n;
+    for(int i = 0;i < n;++i){
+        int tmp;
+        cin >> tmp;
+        v.push_back(tmp);
+    }
+    node* root = NULL;
+
+    create(root);
+    //cout << root->rchild->data << endl;
+    inOrder(root);
+    inOrder_m(root);
+
+    if(inOrd == v){      //run postorder
+        cout << "YES" << endl;
+        postOrder(root);
+    }
+    else if(inOrd_m == v){
+        cout << "YES" << endl;
+        postOrder_m(root);
+    }
+    else{
+        cout << "NO" << endl;
+    }
+}
