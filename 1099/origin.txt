@@ -1,0 +1,67 @@
+#include<cstdio>
+#include<iostream>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+const int maxn = 110;
+
+struct node{
+    int lchild,rchild;
+    int data;
+}Node[maxn];
+
+int value[maxn];
+
+int n;
+int num = 0;
+
+void inOrder(int x){
+    if(Node[x].lchild != -1){
+        inOrder(Node[x].lchild);
+    }
+    Node[x].data = value[num++];
+    if(Node[x].rchild != -1){
+        inOrder(Node[x].rchild);
+    }
+}
+
+int oNum = 0;
+
+void BFS(int x){
+    queue<int> q;
+    q.push(x);
+    while(!q.empty()){
+        int tmp = q.front();
+        q.pop();
+        if(Node[tmp].lchild != -1){
+            q.push(Node[tmp].lchild);
+        }
+        if(Node[tmp].rchild != -1){
+            q.push(Node[tmp].rchild);
+        }
+        if(oNum < n-1){
+            cout << Node[tmp].data << " ";
+            oNum++;
+        }
+        else{
+            cout << Node[tmp].data << endl;
+        }
+    }
+
+}
+
+int main(){
+    //freopen("inputa1099.txt","r",stdin);
+    cin >> n;
+    for(int i = 0;i < n;++i){
+        cin >> Node[i].lchild >> Node[i].rchild;
+    }
+    for(int i = 0;i < n;++i){
+        cin >> value[i];
+    }
+
+    sort(value,value+n);
+    inOrder(0);
+    BFS(0);
+}
