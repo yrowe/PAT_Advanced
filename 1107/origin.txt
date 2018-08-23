@@ -1,0 +1,79 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+const int maxn = 1100;
+
+int father[maxn];
+int course[maxn] = {0};
+int ans = 0;
+int isRoot[maxn] = {0};
+int n;
+
+void init(){
+    for(int i = 1;i <= n;++i){
+        father[i] = i;
+    }
+}
+
+int findFather(int x){
+    int a = x;
+    while(x != father[x]){
+        x = father[x];
+    }
+    //zip
+    while(a != father[a]){
+        int z = a;
+        a = father[a];
+        father[z] = x;
+    }
+
+    return x;
+}
+
+void Union(int a,int b){
+    int faA = findFather(a);
+    int faB = findFather(b);
+    if(faA != faB){
+        father[faA] = faB;
+    }
+}
+
+bool cmp(int a,int b){
+    return a>b;
+}
+
+int main(){
+    //cin >> n;
+    //freopen("inputa1107.txt","r",stdin);
+    scanf("%d",&n);
+    init();
+    int num;
+    for(int i = 1;i <= n;++i){
+        scanf("%d:",&num);
+        while(num--){
+            int h;
+            cin >> h;
+            if(course[h] == 0) course[h] = i;
+            Union(i,father[course[h]]);
+        }
+    }
+
+    for(int i = 1;i <= n;++i){
+        isRoot[findFather(i)]++;
+    }
+
+    for(int i = 1;i <= n;++i){
+        if(isRoot[i] != 0){
+            ans++;
+        }
+    }
+
+    sort(isRoot+1,isRoot+n+1,cmp);
+    cout << ans << endl;
+    for(int i = 1;i <= ans;++i){
+        if(i != ans) cout << isRoot[i] << " ";
+        else cout << isRoot[i] << endl;
+    }
+}
