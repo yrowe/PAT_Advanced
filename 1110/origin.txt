@@ -1,0 +1,86 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<string>
+#include<sstream>
+#include<queue>
+using namespace std;
+
+const int maxn = 30;
+struct node{
+	int lchild,rchild,self;
+	node(){
+		lchild = -1;
+		rchild = -1;
+	}
+};
+node child[maxn];
+bool notRoot[maxn] = {false};
+
+int main(){
+	//freopen("input1110.txt","r",stdin);
+	int n;
+	cin >> n;
+	for(int i = 0;i < n;++i){
+		child[i].self = i;
+		string l,r;
+		int lchild,rchild;
+		cin >> l >> r;
+		if(l != "-"){
+			stringstream ss(l);
+			ss >> lchild;
+			notRoot[lchild] = true;
+			child[i].lchild = lchild;
+		}
+		if(r != "-"){
+			stringstream ss(r);
+			ss >> rchild;
+			notRoot[rchild] = true;
+			child[i].rchild = rchild;
+		}
+	}
+	
+	int root;
+	
+	for(int i = 0;i < n;++i){
+		if(!notRoot[i]){
+			root = i;
+			//cout << root;
+			break;
+		}
+	}
+	node last;
+	int cnt = 0;
+	queue<node> q;
+	q.push(child[root]);
+	++cnt;
+	while(!q.empty()){
+		node tmp = q.front();
+		q.pop();
+		//cout << tmp.self << endl;
+		if(tmp.lchild != -1){
+			q.push(child[tmp.lchild]);
+			++cnt;
+		}
+		else{
+			last = q.back();
+			break;
+		}
+		
+		if(tmp.rchild != -1){
+			q.push(child[tmp.rchild]);
+			++cnt;
+		}
+		else{
+			last = q.back();
+			break;
+		}
+	}
+	
+	if(cnt == n){
+		cout << "YES " << last.self << endl; 
+	}
+	else{
+		cout << "NO " << root << endl;
+	}
+}
