@@ -100,18 +100,17 @@ void Dijkstra2(int s){
 }
 
 vector<int> tempPath2, Path2;
-int optDis = INF;
+int cntNode = INF;
 
 void DFS2(int v){
     if(v == source){
         tempPath2.push_back(v);
-        int tempT = 0;
+        int num = 0;
         for(int i = tempPath2.size()-1; i > 0; --i){
-            int id = tempPath2[i], idNext = tempPath2[i-1];
-            tempT += GD[id][idNext];
+            num++;
         }
-        if(tempT < optDis){
-            optDis = tempT;
+        if(num < cntNode){
+            cntNode = num;
             Path2 = tempPath2;
         }
         tempPath2.pop_back();
