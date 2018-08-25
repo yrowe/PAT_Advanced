@@ -1,0 +1,131 @@
+#include<algorithm>
+#include<cstdio>
+#include<vector>
+#include<iostream>
+#include<set>
+using namespace std;
+
+const int maxn = 10010;
+int n;
+int M[maxn] = {0},A[maxn] = {0};
+int totM[maxn] = {0},totA[maxn] = {0};
+int father[maxn];
+bool isRoot[maxn] = {false};
+set<int> apper;
+int num[maxn] = {0};
+
+struct family{
+    int size;
+    int id;
+    double avg_M;
+    double avg_A;
+};
+
+vector<family> ans;
+
+int init(){
+    for(int i = 0;i < maxn;++i){
+        father[i] = i;
+    }
+}
+
+int findFather(int x){
+    int a = x;
+    while(x != father[x]){
+        x = father[x];
+    }
+    while(a != father[a]){
+        int z = a;
+        a = father[a];
+        father[z] = x;
+    }
+    return x;
+}
+
+void Union(int a,int b){
+    int faA = findFather(a);
+    int faB = findFather(b);
+    if(faA != faB){
+        if(faA < faB){
+            father[faB] = faA;
+        }
+        else{
+            father[faA] = faB;
+        }
+    }
+}
+
+bool cmp(family a,family b){
+    if(a.avg_A != b.avg_A){
+        return a.avg_A > b.avg_A;
+    }
+    return a.id < b.id;
+}
+
+int main(){
+    //freopen("input1114.txt","r",stdin);
+    scanf("%d",&n);
+    init();
+    for(int i = 0;i < n;++i){
+        int index;
+
+        scanf("%d",&index);
+        apper.insert(index);
+        int dad,mom;
+        scanf("%d %d",&dad,&mom);
+        if(dad != -1){
+            apper.insert(dad);
+            Union(index,dad);
+        }
+        if(mom != -1){
+            apper.insert(mom);
+            Union(index,mom);
+        }
+        int childNum;
+        scanf("%d",&childNum);
+        while(childNum--){
+            int child;
+            scanf("%d",&child);
+            apper.insert(child);
+            Union(index,child);
+        }
+        scanf("%d %d",&M[index],&A[index]);
+    }
+
+
+    for(auto p = apper.begin();p != apper.end();++p){
+        int i = *p;
+        totM[findFather(i)] += M[i];
+        totA[findFather(i)] += A[i];
+        num[findFather(i)]++;
+        isRoot[findFather(i)] = true;
+
+    }
+
+
+    for(int i = 0;i < maxn;++i){
+        if(isRoot[i]){
+            family tmp;
+
+            tmp.size = num[i];
+
+            tmp.id = i;
+
+            tmp.avg_M = totM[i]*1.0/tmp.size;
+
+            tmp.avg_A = totA[i]*1.0/tmp.size;
+
+            ans.push_back(tmp);
+            //cout << "here" <<endl;
+        }
+    }
+
+
+    sort(ans.begin(),ans.end(),cmp);
+
+    printf("%d\n",ans.size());
+    for(auto p = ans.begin();p != ans.end();++p){
+        printf("%04d %d %.3f %.3f\n",p->id,p->size,p->avg_M,p->avg_A);
+    }
+
+}
