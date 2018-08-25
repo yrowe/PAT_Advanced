@@ -1,0 +1,38 @@
+#include<cstdio>
+#include<algorithm>
+#include<iostream>
+using namespace std;
+
+const int maxn = 100010;
+int seq[maxn];
+
+int main(){
+    //freopen("input1113.txt","r",stdin);
+    int n;
+    int s1 = 0,s2 = 0,differ;
+    scanf("%d",&n);
+    for(int i = 0;i < n;++i){
+        scanf("%d",&seq[i]);
+    }
+    sort(seq,seq + n);
+    if(n % 2 == 0){
+        for(int i = 0;i < n/2;++i){
+            s1 += seq[i];
+            s2 += seq[n-i-1];
+        }
+        differ = s2 - s1;
+        printf("0 %d",differ);
+    }
+    else{
+        for(int i = 0;i < n;++i){
+            if(i < n/2){
+                s1 += seq[i];
+            }
+            else{
+                s2 += seq[i];
+            }
+        }
+        differ = s2 - s1;
+        printf("1 %d",differ);
+    }
+}
