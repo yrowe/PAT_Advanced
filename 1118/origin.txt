@@ -1,0 +1,79 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+using namespace std;
+
+const int maxn = 10010;
+int father[maxn];
+bool isRoot[maxn] = {false};
+
+int findFather(int x){
+	int a = x;
+	while(x != father[x]){
+		x = father[x];
+	}
+	while(a != father[a]){
+		int z = a;
+		a = father[a];
+		father[z] = x;
+	}
+	return x;
+}
+
+void Union(int a,int b){
+	int faA = findFather(a);
+	int faB = findFather(b);
+	if(faA != faB){
+		father[faA] = faB;
+	}
+}
+
+int main(){
+	//freopen("input1118.txt","r",stdin);
+	int n;
+	scanf("%d",&n);
+	for(int i = 0;i < maxn;++i){
+		father[i] = i;
+	}
+	
+	int maxID = 1;
+	while(n--){
+		int num;
+		scanf("%d",&num);
+		int id1,id2;
+		scanf("%d",&id1);
+		maxID = max(id1,maxID);
+		for(int i = 1;i < num;++i){
+			scanf("%d",&id2);
+			maxID = max(id2,maxID);
+			Union(id1,id2);
+			id1 = id2;
+		}
+	}
+	int cnt = 0;
+	
+	for(int i = 1;i <= maxID;++i){
+//		if(!isRoot[findFather(i)]){
+//			isRoot[findFather(i)] = true;
+//			++cnt;
+//		}
+		if(i == findFather(i)){
+			++cnt;
+		}
+	}
+	
+	printf("%d %d\n",cnt,maxID);
+	
+	int query;
+	scanf("%d",&query);
+	while(query--){
+		int q1,q2;
+		scanf("%d %d",&q1,&q2);
+		if(findFather(q1) == findFather(q2)){
+			printf("Yes\n");
+		}
+		else{
+			printf("No\n");
+		}
+	}
+}
