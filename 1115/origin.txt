@@ -1,0 +1,69 @@
+#include<cstdio>
+#include<iostream>
+#include<queue>
+using namespace std;
+
+struct Node{
+    int v;
+    int depth;
+    Node *lchild,*rchild;
+};
+
+Node* newNode(int v){
+    Node* node = new Node;
+    node->v = v;
+    node->lchild = node->rchild = NULL;
+    return node;
+}
+
+void insert(Node* &root,int v){      //here must be a &
+    if(root == NULL){
+        root = newNode(v);
+        return;
+    }
+    if(v <= root->v) insert(root->lchild,v);
+    else insert(root->rchild,v);
+}
+int maxDepth = 1;
+int numDepth[2000] = {0};
+
+void BFS(Node* root){
+    queue<Node*> q;
+    root->depth = 1;
+    q.push(root);
+    while(!q.empty()){
+        Node* tmp = q.front();
+        q.pop();
+        numDepth[tmp->depth]++;
+      if(tmp->depth > maxDepth){
+        maxDepth = tmp->depth;
+      }
+        if(tmp->lchild != NULL){
+            tmp->lchild->depth = tmp->depth + 1;
+            q.push(tmp->lchild);
+          
+        }
+        if(tmp->rchild != NULL){
+            tmp->rchild->depth = tmp->depth + 1;
+            q.push(tmp->rchild);
+            
+        }
+
+    }
+}
+
+int main(){
+    //freopen("input1115.txt","r",stdin);
+    int n;
+    cin >> n;
+    Node* root = NULL;
+    while(n--){
+        int tmp;
+        cin >> tmp;
+        insert(root,tmp);
+    }
+    BFS(root);
+    int n1 = numDepth[maxDepth];
+    int n2 = numDepth[maxDepth - 1];
+    cout << n1 << " + " << n2 << " = " << n1 + n2 << endl;
+}
