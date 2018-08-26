@@ -1,0 +1,51 @@
+#include<cstdio>
+#include<algorithm>
+#include<vector>
+#include<iostream>
+using namespace std;
+
+const int maxn = 100010;
+int partner[maxn];
+int come[maxn] = {false};
+vector<int> ans;
+int member[maxn];
+
+int main(){
+    //freopen("input1121.txt","r",stdin);
+    for(int i = 0;i < maxn;++i){
+        partner[i] = i;
+    }
+    int n;
+    scanf("%d",&n);
+
+    while(n--){
+        int tmp1,tmp2;
+        scanf("%d %d",&tmp1,&tmp2);
+        partner[tmp1] = tmp2;
+        partner[tmp2] = tmp1;
+    }
+
+    scanf("%d",&n);
+
+    for(int i = 0;i<n;++i){
+        int tmp;
+        scanf("%d",&tmp);
+        come[tmp] = true;
+        member[i] = tmp;
+    }
+
+    for(int i = 0;i < n;++i){
+        int id = member[i];
+        if(partner[id] != id && come[partner[id]] == true){
+            continue;
+        }
+        ans.push_back(id);
+    }
+    printf("%d\n",ans.size());
+    sort(ans.begin(),ans.end());
+    for(int i = 0;i < ans.size();++i){
+        printf("%05d",ans[i]);
+        if(i != ans.size()-1) printf(" ");
+        else printf("\n");
+    }
+}
