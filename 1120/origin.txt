@@ -1,0 +1,36 @@
+#include<map>
+#include<cstdio>
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int cal(int num){
+    int sum1 = 0;
+    int i = 10;
+    while(num/i != 0){
+       sum1 += num%i;
+       num /= i;
+    }
+    sum1 += num;
+    return sum1;
+}
+
+map<int,vector<int>> py;
+int main(){
+    //freopen("input1120.txt","r",stdin);
+    int n;
+    int tmp;
+    cin >> n;
+    while(n--){
+        cin >> tmp;
+        py[cal(tmp)].push_back(tmp);
+    }
+    cout << py.size() << endl;
+    auto p = py.begin();
+    cout << p->first;
+    ++p;
+    for(;p != py.end();++p){
+        cout << " " << p->first;
+    }
+    cout << endl;
+}
