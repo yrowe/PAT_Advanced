@@ -1,0 +1,31 @@
+#include<iostream>
+#include<cstdio>
+#include<algorithm>
+#include<cstring>
+using namespace std;
+
+const int maxn = 100010;
+int mile[maxn];
+int ans[maxn] = {0};
+
+int main(){
+	//freopen("input1117.txt","r",stdin);
+	int n;
+	scanf("%d",&n);
+	for(int i = 1;i <= n;++i){
+		scanf("%d",&mile[i]);
+	}
+	
+	sort(mile + 1,mile + n + 1,greater<int>());
+	int maxAns = n;
+	for(int i = 1;i <= n;++i){
+		//cout << mile[i] << " " << i << endl;
+		if(mile[i] <= i){
+			maxAns = i - 1;
+			break;
+		}
+		
+	}
+	
+	printf("%d\n",maxAns);
+}
