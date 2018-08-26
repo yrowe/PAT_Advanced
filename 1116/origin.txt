@@ -1,0 +1,64 @@
+#include<iostream>
+#include<cstdio>
+#include<cmath>
+#include<cstring>
+using namespace std;
+
+const int maxn = 10010;
+int rank1[maxn];
+bool check[maxn] = {false};
+
+bool isPrime(int x){
+	if(x == 2) return true;
+	for(int i = 2;i < (int)sqrt(x*1.0) + 1;++i){
+		if(x % i == 0) return false;
+	}
+	return true;
+}
+
+int main(){
+	//freopen("input1116.txt","r",stdin);
+	
+	memset(rank1,-1,sizeof(rank1));
+	int n;
+	scanf("%d",&n);
+	for(int i = 1;i <= n;++i){
+		int index;
+		scanf("%d",&index);
+		rank1[index] = i;
+	}
+	
+	scanf("%d",&n);
+	while(n--){
+		int query;
+		scanf("%d",&query);
+		//cout << query << endl;
+		//cout << rank1[query] << endl;
+		if(rank1[query] == -1){
+			//cout << "Are you kidding?" << endl;
+			printf("%04d: Are you kidding?\n",query);
+			continue;
+		}
+		
+		if(check[query]){
+			//cout << "Checked" << endl;
+			printf("%04d: Checked\n",query);
+			continue;
+		}
+		
+		check[query] = true;
+		if(rank1[query] == 1){
+			//cout << "Mystery Award" << endl;
+			printf("%04d: Mystery Award\n",query);
+			continue;
+		}
+		
+		if(isPrime(rank1[query])){
+			printf("%04d: Minion\n",query);
+			//cout << "Minion" << endl;
+			continue;
+		}
+		printf("%04d: Chocolate\n",query);
+		//cout << "Chocolate" << endl;
+	}
+}
