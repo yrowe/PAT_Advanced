@@ -1,0 +1,48 @@
+#include<iostream>
+#include<cstdio>
+#include<string>
+#include<vector>
+using namespace std;
+
+vector<string> ans;
+
+int main(){
+	//freopen("input1124.txt","r",stdin);
+	int m,n,s;
+	cin >> m >> n >> s;
+	//cout << m <<" " << n <<" "<< s << endl;
+	int cnt = 0;
+	for(int i = 1;i <= m;++i){
+		string tmp;
+		cin >> tmp;
+		if(i < s){
+			continue;
+		}
+		if(i == s){
+			ans.push_back(tmp);
+			continue;
+		}
+		++cnt;
+		if(cnt == n){
+			bool flag = false;
+			for(int j = 0;j < ans.size();++j){
+				if(ans[j] == tmp){
+					--cnt;
+					flag = true;
+				}
+			}
+			if(flag) continue;
+			ans.push_back(tmp);
+			cnt = 0;	
+		}	
+	}
+	
+	if(ans.size() == 0){
+		cout << "Keep going..." << endl;
+	}
+	else{
+		for(int i = 0;i < ans.size();++i){
+			cout << ans[i] << "\n";
+		}
+	}
+}
