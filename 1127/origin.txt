@@ -1,0 +1,83 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<queue>
+using namespace std;
+
+struct node{
+	int data;
+	int layer;
+	node *lchild,*rchild;
+};
+
+const int maxn = 40;
+int post[maxn],in[maxn];
+vector<int> ans[maxn];
+
+node* create(int postL,int postR,int inL,int inR){
+	if(postL > postR){
+		return NULL;
+	}
+	node* root = new node;
+	root->data = post[postR];
+	int k;
+	for(k = inL;k <= inR;++k){
+		if(in[k] == post[postR]){
+			break;
+		}
+	}
+	int num = k - inL;
+	root->lchild = create(postL,postL + num - 1,inL,k - 1);
+	root->rchild = create(postL + num,postR - 1,k + 1,inR);
+	return root;
+}
+
+void BFS(node* root){
+	queue<node*> q;
+	root->layer = 1;
+	q.push(root);
+	while(!q.empty()){
+		node* tmp = q.front();
+		q.pop();
+		ans[tmp->layer].push_back(tmp->data);
+		if(tmp->lchild != NULL){
+			tmp->lchild->layer = tmp->layer + 1;
+			q.push(tmp->lchild);
+		}
+		if(tmp->rchild != NULL){
+			tmp->rchild->layer = tmp->layer + 1;
+			q.push(tmp->rchild);
+		}
+	}
+}
+
+int main(){
+	//freopen("input1127.txt","r",stdin);
+	int n;
+	cin >> n;
+	for(int i = 0;i < n;++i){
+		cin >> in[i];
+	}
+	for(int i = 0;i < n;++i){
+		cin >> post[i];
+	}
+	node* root = new node;
+	root = create(0,n-1,0,n-1);
+	BFS(root);
+	cout << ans[1][0];
+	int l = 2;
+	while(ans[l].size() != 0){
+		if(l % 2 == 0){
+			for(auto p = ans[l].begin();p != ans[l].end();++p){
+				cout << " " <<*p;
+			}
+		}
+		else{
+			for(auto p = ans[l].rbegin();p != ans[l].rend();++p){
+				cout << " " <<*p;
+			}
+		}
+		++l;
+	}
+	cout << endl;
+}
