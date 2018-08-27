@@ -1,0 +1,135 @@
+#include<iostream>
+#include<cstdio>
+#include<vector>
+#include<queue>
+#include<algorithm>
+using namespace std;
+
+const int maxn = 21;
+struct node{
+	int v,height;
+	node *lchild,*rchild;
+};
+
+node* newNode(int v){
+	node* Node = new node;
+	Node->v = v;
+	Node->height = 1;
+	Node->lchild = Node->rchild = NULL;
+	return Node;
+}
+
+int getHeight(node* Node){
+	if(Node == NULL) return 0;
+	else return Node->height;
+}
+
+int getBalance(node* Node){
+	return getHeight(Node->lchild) - getHeight(Node->rchild);
+}
+
+void updateHeight(node* Node){
+	Node->height = max(getHeight(Node->lchild),getHeight(Node->rchild)) + 1;
+}
+
+void L(node* &Node){
+	node* temp = Node->rchild;
+	Node->rchild = temp->lchild;
+	temp->lchild = Node;
+	updateHeight(Node);
+	updateHeight(temp);
+	Node = temp;
+}
+
+void R(node* &Node){
+	node* temp = Node->lchild;
+	Node->lchild = temp->rchild;
+	temp->rchild = Node;
+	updateHeight(Node);
+	updateHeight(temp);
+	Node = temp;
+}
+
+void insert(node* &root,int v){
+	if(root == NULL){
+		root = newNode(v);
+		return;
+	}
+	
+	if(v < root->v){
+		insert(root->lchild,v);
+		updateHeight(root);
+		if(getBalance(root) == 2){
+			if(getBalance(root->lchild) == 1){
+				R(root);
+			}else if(getBalance(root->lchild) == -1){
+				L(root->lchild);
+				R(root);
+			}
+		}
+	}else{
+		insert(root->rchild,v);
+		updateHeight(root);
+		if(getBalance(root) == -2){
+			if(getBalance(root->rchild) == -1){
+				L(root);
+			}
+			else if(getBalance(root->rchild) == 1){
+				R(root->rchild);
+				L(root);
+			}
+		}
+	}
+}
+int n;
+int cnt = 0;
+
+void BFS(node* root){
+	queue<node*> q;
+	q.push(root);
+	while(!q.empty()){
+		node* tmp = q.front();
+		q.pop();
+		cout << tmp->v;
+		++cnt;
+		if(cnt < n) cout << " ";
+		else cout << "\n";
+		
+		if(tmp->lchild != NULL) q.push(tmp->lchild);
+		if(tmp->rchild != NULL) q.push(tmp->rchild);
+	}
+}
+
+int cnt2 = 0;
+
+void isCBT(node* root){
+	queue<node*> q;
+	q.push(root);
+	while(q.front() != NULL){
+		node* tmp = q.front();
+		++cnt2;
+		q.pop();
+		q.push(tmp->lchild);
+		q.push(tmp->rchild);
+	}
+}
+
+int main(){
+	//freopen("input1123.txt","r",stdin);
+	cin >> n;
+	node* root = NULL;
+	for(int i = 0;i < n;++i){
+		int value;
+		cin >> value;
+		insert(root,value);
+	}
+	
+	BFS(root);
+	isCBT(root);
+	if(cnt2 == n){
+		cout << "YES" << endl;
+	}
+	else{
+		cout << "NO" << endl;
+	}
+}
