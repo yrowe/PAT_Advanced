@@ -1,0 +1,51 @@
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<string>
+using namespace std;
+
+const int maxn = 1010;
+bool vis[maxn][maxn];
+string discard;
+
+bool judge(int n){
+   // freopen("input1128.txt","r",stdin);
+    fill(vis[0],vis[0] + maxn*maxn,false);
+    for(int col = 1;col <= n;++col){
+        int row;
+        cin >> row;
+        if(vis[col][row] == true) {
+            getline(cin,discard);
+            return false;
+        }
+        else{
+            for(int st = col;st <= n;++st){
+                vis[st][row] = true;
+            }
+            int i = col,j = row;
+            while(i <= n && j <= n){
+                vis[++i][++j] = true;
+            }
+            i = col,j = row;
+            while(i <= n && j > 0){
+                vis[++i][--j] = true;
+            }
+        }
+    }
+    return true;
+}
+
+int main(){
+    int num;
+    cin >> num;
+    while(num--){
+        int n;
+        cin >> n;
+        if(judge(n) == true){
+            cout << "YES" << endl;
+        }
+        else{
+            cout << "NO" << endl;
+        }
+    }
+}
