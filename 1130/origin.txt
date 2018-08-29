@@ -1,0 +1,56 @@
+#include<string>
+#include<vector>
+#include<iostream>
+#include<fstream>
+using namespace std;
+
+struct node {
+	int lchild, rchild;
+	string c;
+};
+
+vector<node> nodes;
+vector<int> isRoot;
+int root;
+
+string dfs(int i) {
+	if (i == -1) return "";
+	if (nodes[i].rchild != -1) {
+		nodes[i].c = dfs(nodes[i].lchild) + nodes[i].c + dfs(nodes[i].rchild);
+		if (i != root) nodes[i].c = '(' + nodes[i].c + ')';
+	}
+	return nodes[i].c;
+}
+
+int main() {
+#ifdef _DEBUG
+	ifstream cin("data.txt");
+#endif
+	int n;
+	cin >> n;
+	nodes.resize(n + 1);
+	isRoot.resize(n + 1);
+	for (int i = 1; i <= n; ++i) {
+		cin >> nodes[i].c >> nodes[i].lchild >> nodes[i].rchild;
+		if (nodes[i].lchild != -1) {
+			isRoot[nodes[i].lchild]++;
+		}
+		if (nodes[i].rchild != -1) {
+			isRoot[nodes[i].rchild]++;
+		}
+		
+	}
+	
+	for (int i = 1; i <= n; ++i) {
+		if (isRoot[i] == 0) {
+			root = i;
+			break;
+		}
+	}
+
+	cout << dfs(root) << endl;
+
+#ifdef _DEBUG
+	cin.close();
+#endif
+}
