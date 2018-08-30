@@ -1,0 +1,53 @@
+#include<cstdio>
+#include<iostream>
+#include<fstream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+const int maxn = 10010;
+bool edge[maxn] = { false };
+vector<int> v[maxn];
+
+int main() {
+#ifdef _DEBUG
+	ifstream cin("data.txt");
+#endif
+	int n, m;
+	cin >> n >> m;
+	for (int i = 0; i < m; ++i) {
+		int v1, v2;
+		cin >> v1 >> v2;
+		v[v1].push_back(i);
+		v[v2].push_back(i);
+	}
+	int k;
+	cin >> k;
+	while (k--) {
+		int nv;
+		cin >> nv;
+		fill(edge, edge + maxn, false);
+		for (int i = 0; i < nv; ++i) {
+			int tmp;
+			cin >> tmp;
+			for (int j = 0; j < v[tmp].size(); ++j) {
+				edge[v[tmp][j]] = true;
+			}
+		}
+		bool flg = true;
+		for (int j = 0; j < m; ++j) {
+			if (edge[j] == false)
+				flg = false;
+		}
+		if (flg) {
+			cout << "Yes" << endl;
+		}
+		else {
+			cout << "No" << endl;
+		}
+	}
+	system("pause");
+#ifdef _DEBUG
+	cin.close();
+#endif
+}
