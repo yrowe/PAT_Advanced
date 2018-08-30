@@ -1,0 +1,42 @@
+#include<iostream>
+#include<fstream>
+#include<string>
+using namespace std;
+
+void get_two_num(string s,int& a,int& b, int& c) {
+	int mid = s.size() / 2;
+	for (int i = 0; i < mid; ++i) {
+		a = a * 10 + s[i] - '0';
+	}
+	for (int i = mid; i < s.size(); ++i) {
+		b = b * 10 + s[i] - '0';
+	}
+	for (int i = 0; i < s.size(); ++i) {
+		c = c * 10 + s[i] - '0';
+	}
+	return;
+}
+
+int main() {
+#ifdef _DEBUG
+	ifstream cin("data.txt");
+#endif
+	int n;
+	cin >> n;
+	while (n--) {
+		string num;
+		cin >> num;
+		int a=0, b=0,total=0;
+		get_two_num(num, a, b, total);
+		if (a*b != 0 && total % (a*b) == 0) {
+			cout << "Yes" << endl;
+		}
+		else {
+			cout << "No" << endl;
+		}
+	}
+	system("pause");
+#ifdef _DEBUG
+	cin.close();
+#endif
+}
