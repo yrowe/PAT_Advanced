@@ -1,0 +1,65 @@
+#include<cstdio>
+#include<iostream>
+#include<fstream>
+#include<vector>
+using namespace std;
+
+struct node {
+	int val;
+	struct node *lchild, *rchild;
+};
+
+
+bool flg = false;
+
+vector<int> preArr, inArr;
+
+node* create(int preL, int preR, int inL, int inR) {
+	if (preL > preR) return NULL;
+	node* root = new node;
+	root->val = preArr[preL];
+	int k;
+	for (k = inL; k <= inR; ++k) {
+		if (preArr[preL] == inArr[k]) {
+			break;
+		}
+	}
+	root->lchild = create(preL + 1, preL + k - inL, inL, k - 1);
+	root->rchild = create(preL + k - inL + 1, preR, k + 1, inR);
+	return root;
+}
+
+void postCout(node *root) {
+	if (root == NULL) return;
+	postCout(root->lchild);
+	postCout(root->rchild);
+	//if (flg == false) {
+	//	cout << root->val << endl;
+	//	flg = true;
+	//}
+	cout << root->val << endl;
+	system("pause");
+	exit(0);
+}
+
+int main() {
+#ifdef _DEBUG
+	ifstream cin("data.txt");
+#endif
+	int n;
+	cin >> n;
+	preArr.resize(n);
+	inArr.resize(n);
+	for (int i = 0; i < n; ++i) {
+		cin >> preArr[i];
+	}
+	for (int i = 0; i < n; ++i) {
+		cin >> inArr[i];
+	}
+	node* root = create(0, n - 1, 0, n - 1);
+	postCout(root);
+
+#ifdef _DEBUG
+	cin.close();
+#endif
+}
