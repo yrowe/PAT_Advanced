@@ -1,0 +1,92 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<string>
+#include<map>
+#include<fstream>
+#include<cmath>
+using namespace std;
+
+struct student {
+	string ID;
+	int Gp, Gm, Gf, G;
+	bool friend operator < (const student &a, const student &b) {
+		if (a.G == b.G)
+			return a.ID < b.ID;
+		else
+			return a.G > b.G;
+	}
+	student() {
+		Gp = -1;
+		Gm = -1;
+		Gf = -1;
+		G = -1;
+	}
+}stu[10010];
+
+int main() {
+#ifdef _DEBUG
+	ifstream cin("data.txt");
+#endif
+	map<string, int> ID2index;
+	int p, m, n;
+	cin >> p >> m >> n;
+	int t = 1;
+	for (int i = 0; i < p; ++i) {
+		string tmp;
+		int score;
+		cin >> tmp >> score;
+		if (score >= 200) {
+			stu[t].ID = tmp;
+			stu[t].Gp = score;
+			ID2index[tmp] = t;
+			t++;
+		}
+	}
+
+	//when debuging it is fail to watch ID2index[tmp]
+
+	for (int i = 0; i < m; ++i) {
+		string tmp;
+		int score;
+		cin >> tmp >> score;
+		if (ID2index[tmp] != 0) {
+			
+			stu[ID2index[tmp]].Gm = score;
+		}
+	}
+
+	for (int i = 0; i < n; ++i) {
+		string tmp;
+		int score;
+		cin >> tmp >> score;
+		if (ID2index[tmp] != 0) {
+			stu[ID2index[tmp]].Gf = score;
+		}
+	}
+
+
+	for (int i = 1; i < t; ++i) {
+		int Gm = stu[i].Gm > 0 ? stu[i].Gm : 0;
+		int Gf = stu[i].Gf > 0 ? stu[i].Gf : 0;
+		if (Gm > Gf) {
+			stu[i].G = round(0.4*Gm + 0.6*Gf);
+		}
+		else {
+			stu[i].G = Gf;
+		}
+	}
+
+	sort(stu + 1, stu + t);
+
+	for (int i = 1; i < t; ++i) {
+		if (stu[i].G >= 60 && stu[i].G <= 100) {
+			cout << stu[i].ID << " " << stu[i].Gp << " " << stu[i].Gm << " " << stu[i].Gf << " " << stu[i].G << endl;
+		}
+	}
+
+#ifdef _DEBUG
+	cin.close();
+#endif
+	return 0;
+}
