@@ -1,0 +1,112 @@
+#include<cstdio>
+#include<iostream>
+#include<map>
+#include<algorithm>
+using namespace std;
+
+const int maxn  = 2010;
+int num = 0;
+int blocks = 0;
+
+bool visit[maxn] = {false};
+
+struct vertex{
+    int w;
+    vector<int> adj;
+}people[maxn];
+
+map<string,int> m;
+
+int getID(string &s){
+    if(m.find(s) != m.end()) return m[s];
+    else{
+        m[s] = num++;
+        return m[s];
+    }
+}
+
+int local_n;
+int bang_weight;
+int n,k;
+
+void DFS(int v,vector<int> &bm){
+    local_n++;
+    bang_weight += people[v].w;
+    bm.push_back(v);
+    visit[v] = true;
+    for(int i = 0;i < people[v].adj.size();++i){
+        if(visit[people[v].adj[i]] == false){
+            DFS(people[v].adj[i],bm);
+        }
+    }
+}
+
+struct answer{
+    string id;
+    int num;
+}tmp;
+
+vector<answer> ans;
+
+void D(){
+    for(int i = 0;i < num;++i){
+        if(visit[i] == false){
+            local_n = 0;
+            bang_weight = 0;
+            vector<int> bang_mem;
+            //cout << i << endl;
+            DFS(i,bang_mem);
+            if(local_n > 2 && bang_weight/2 > k){
+                blocks++;
+                int maxW = -1;
+                int maxID;
+                for(int j = 0;j < bang_mem.size();++j){
+                    if(people[bang_mem[j]].w > maxW){
+                        maxW = people[bang_mem[j]].w;
+                        maxID = bang_mem[j];
+                    }
+                }
+                for(auto j = m.begin();j != m.end();++j){
+                    if(j->second == maxID){
+                        tmp.id = j->first;
+                        tmp.num = bang_mem.size();
+                        ans.push_back(tmp);
+                        break;
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+bool cmp(answer a,answer b){
+    return a.id < b.id;
+}
+
+int main(){
+    //freopen("a1034.txt","r",stdin);
+    string id1,id2;
+    int weight;
+    cin >> n >> k;
+    for(int i = 0;i < n;++i){
+        cin >> id1 >> id2;
+        cin >> weight;
+        int i1 = getID(id1);
+        int i2 = getID(id2);
+       //cout << "i = " <<  i << " i1,i2 = " << i1 << " " << i2 <<endl;
+        people[i1].w += weight;
+        people[i2].w += weight;
+        people[i1].adj.push_back(i2);
+        people[i2].adj.push_back(i1);
+    }
+
+    D();
+
+    sort(ans.begin(),ans.end(),cmp);
+
+    cout << blocks << endl;
+    for(int i = 0;i < ans.size();++i){
+        cout << ans[i].id << " " << ans[i].num << endl;
+    }
+}
