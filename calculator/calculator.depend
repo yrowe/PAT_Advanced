@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1536227411 source:e:\pat_advanced\calculator\main.cpp
+	<iostream>
+	<cstdio>
+	<string>
+	<stack>
+	<queue>
+	<map>
+

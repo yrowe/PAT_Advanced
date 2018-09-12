@@ -1,7 +1,6 @@
 # depslib dependency file v1.0
-1535374744 source:e:\pat_advanced\1127\main.cpp
+1536049354 source:e:\pat_advanced\codeup1921\main.cpp
 	<iostream>
 	<cstdio>
-	<vector>
 	<queue>
 

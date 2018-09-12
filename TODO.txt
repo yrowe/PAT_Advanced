@@ -1,0 +1,19 @@
+main里面关闭cin同步
+中序+层序确立二叉树  DONE
+Huffman树  一般可以用优先队列做， 如果是Huffman编码，则必须建树， 太难了。赌PAT不考
+
+Dijkstra + DFS板子   DONE
+AVL板子 DONE
+并查集板子 DONE
+拓扑板子 DONE
+关键路径板子 DONE
+大整数板子 DONE
+GCD板子 DONE
+SPFA板子
+floyd板子
+堆排序板子
+
+学用python写二叉树。为了中缀表达式计算题。
+
+双端队列 有STL实现吗？ 出队顺序合法题思路？  答： 双端队列 deque， 题目遇到了再说。
+stringstream用法小结

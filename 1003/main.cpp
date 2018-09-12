@@ -1,46 +1,46 @@
-#include <iostream>
 #include <cstdio>
+#include <iostream>
 #include <vector>
 #include <queue>
-#include <algorithm>
-#include <cstring>
 using namespace std;
 
-struct Node{
+struct node{
     int v, dis;
-    Node(int _v, int _dis): v(_v), dis(_dis){}
+    node(int _v,int _dis){
+        v = _v;
+        dis = _dis;
+    }
 };
 
 const int MAXV = 505;
 const int INF = 0x3fffffff;
-vector<Node> Adj[MAXV];
-int n, d[MAXV], num[MAXV];
-bool inq[MAXV];
+int n;
+vector<node> adj[MAXV];
 vector<int> pre[MAXV];
+bool inq[MAXV] = {false};
+int d[MAXV];
+int num[MAXV] = {0};
 
 bool SPFA(int s){
-    memset(inq, false, sizeof(inq));
-    memset(num, 0, sizeof(num));
-    fill(d, d+MAXV, INF);
     queue<int> Q;
+    fill(d, d+MAXV, INF);
     Q.push(s);
     inq[s] = true;
-    num[s]++;
     d[s] = 0;
+    num[s]++;
     while(!Q.empty()){
         int u = Q.front();
         Q.pop();
         inq[u] = false;
-        for(int j = 0;j < Adj[u].size(); ++j){
-            int v = Adj[u][j].v;
-            int dis = Adj[u][j].dis;
+        for(int j = 0;j < adj[u].size(); ++j){
+            int v = adj[u][j].v, dis = adj[u][j].dis;
             if(d[u] + dis < d[v]){
                 pre[v].clear();
                 pre[v].push_back(u);
-                d[v] = d[u] + dis;
-                if(!inq[v]){
-                    Q.push(v);
+                d[v] = d[u]+dis;
+                if(inq[v] == false){
                     inq[v] = true;
+                    Q.push(v);
                     num[v]++;
                     if(num[v] >= n) return false;
                 }
@@ -50,8 +50,8 @@ bool SPFA(int s){
             }
         }
     }
-    return true;
 }
+
 
 int m, c1, c2;
 int hands[MAXV] = {0};
@@ -95,11 +95,13 @@ int main()
     while(m--){
         int v1, v2, wt;
         cin >> v1 >> v2 >> wt;
-        Adj[v1].push_back(Node(v2, wt));
-        Adj[v2].push_back(Node(v1, wt));
+        adj[v1].push_back(node(v2, wt));
+        adj[v2].push_back(node(v1, wt));
     }
     SPFA(c1);
     DFS(c2);
     cout << numPath << " " << maxHands << endl;
     return 0;
 }
+
+

@@ -1,0 +1,23 @@
+判断完全二叉树方法：
+void isCBT(node* root){
+	queue<node*> q;
+	q.push(root);
+	while(q.front() != NULL){
+		node* tmp = q.front();
+		++cnt2;
+		q.pop();
+		q.push(tmp->lchild);
+		q.push(tmp->rchild);
+	}
+}
+
+结构体重载运算符
+struct node {
+    int value, cnt;
+    friend bool operator < (node a, node b){
+        if(a.cnt != b.cnt)
+            return a.cnt > b.cnt;
+        else
+            return a.value < b.value;
+    }
+};

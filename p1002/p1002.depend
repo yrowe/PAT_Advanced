@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1535886888 source:e:\pat_advanced\p1002\main.cpp
+	<iostream>
+	<cstdio>
+	<string>
+	<map>
+	<vector>
+	<algorithm>
+

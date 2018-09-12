@@ -1,0 +1,6 @@
+Q1：Cannot perform pointer math on incomplete types, try casting to a known type, or void *.
+A1：调试时，数组大小要固定。
+
+最好不要在递归里面打断点 不然step next会一路进递归。可以在递归入口设置断点。之后step into.
+
+exit在cstdlib里。需要exit(0)

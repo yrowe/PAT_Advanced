@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1536030164 source:e:\pat_advanced\p1020\main.cpp
+	<iostream>
+	<cstdio>
+	<queue>
+	<vector>
+	<stack>
+	<algorithm>
+
