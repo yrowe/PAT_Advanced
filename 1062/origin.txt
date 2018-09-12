@@ -1,0 +1,68 @@
+#include<cstdio>
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#include<cstring>
+#include<cstring>
+using namespace std;
+
+struct student{
+    char id[10];
+    int virtue;
+    int talent;
+    int tot;
+    int flg;
+};
+
+bool cmp(student a,student b){
+    if(a.flg != b.flg)
+        return a.flg < b.flg;
+    else if(a.tot != b.tot)
+        return a.tot > b.tot;
+    else if(a.virtue != b.virtue)
+        return a.virtue > b.virtue;
+    else
+        return strcmp(a.id,b.id) < 0;          //这个写法不能变
+}
+
+int main(){
+    //freopen("inputa1062.txt","r",stdin);
+    int n,l,h;
+    scanf("%d %d %d",&n,&l,&h);
+    vector<student> ans;
+    for(int i = 0;i < n;++i){
+        student tmp;
+        scanf("%s%d%d",tmp.id,&tmp.virtue,&tmp.talent);
+        tmp.tot = tmp.virtue + tmp.talent;
+        if(tmp.virtue < l || tmp.talent < l){
+            tmp.flg = 5;
+        }
+        else{
+            if(tmp.virtue >= h && tmp.talent >= h){
+                tmp.flg = 1;
+            }
+            else if(tmp.virtue >= h && tmp.talent < h){
+                tmp.flg = 2;
+            }
+            else if(tmp.virtue >= tmp.talent){
+                tmp.flg = 3;
+            }
+            else
+                tmp.flg = 4;
+        }
+
+        if(tmp.flg != 5){
+            ans.push_back(tmp);
+        }
+    }
+
+    sort(ans.begin(),ans.end(),cmp);
+
+    printf("%d\n",ans.size());
+    //cout << ans.size() << endl;
+    for(auto i:ans){
+        printf("%s %d %d\n",i.id,i.virtue,i.talent);
+        //cout << i.id << " " << i.virtue << " " << i.talent << endl;
+    }
+    return 0;
+}
