@@ -1,0 +1,54 @@
+#include<cstdio>
+#include<iostream>
+#include<vector>
+#include<cmath>
+using namespace std;
+
+const int maxn = 100010;
+
+struct node{
+    vector<int> child;
+}Node[maxn];
+
+int minDepth = maxn;
+int cnt;
+
+void DFS(int id,int depth){
+    if(Node[id].child.empty()){
+        if(depth == minDepth){
+            cnt++;
+        }
+        if(depth < minDepth){
+            minDepth = depth;
+            cnt = 1;
+        }
+    }
+    else{
+        for(auto x:Node[id].child){
+            DFS(x,depth+1);
+        }
+    }
+}
+
+int main(){
+    //freopen("inputa1106.txt","r",stdin);
+    int n;
+    double p,r;
+    cin >> n >> p >> r;
+    r /= 100;
+    for(int i = 0;i < n;++i){
+        int num;
+        cin >> num;
+        while(num--){
+            int tmp;
+            cin >> tmp;
+            Node[i].child.push_back(tmp);
+        }
+    }
+
+    DFS(0,0);
+    //cout << minDepth << " " << cnt << endl;
+    double ans = p*pow(1+r,minDepth);
+    printf("%.4f %d\n",ans,cnt);
+    //cout << ans << " " << cnt << endl;
+}
